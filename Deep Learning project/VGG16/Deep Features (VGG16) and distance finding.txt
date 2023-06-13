@@ -1,0 +1,90 @@
+# Saving the model 
+
+model.save('/content/drive/MyDrive/Colab Notebooks/Model/inception_deepfeature_01.h5')
+
+import numpy as np
+import cv2
+import os
+from keras.models import load_model
+from keras.models import Model
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.inception_v3 import InceptionV3, preprocess_input
+from google.colab import files
+
+# Load the InceptionV3 model
+model = InceptionV3(weights='imagenet', include_top=False)
+model = load_model('/content/drive/MyDrive/Colab Notebooks/Model/inception_deepfeature_01.h5')
+
+
+# Upload the query image file
+uploaded = files.upload()
+query_image_data = next(iter(uploaded.values()))
+
+# Decode the query image data using OpenCV
+query_img = cv2.imdecode(np.frombuffer(query_image_data, np.uint8), cv2.IMREAD_COLOR)
+query_img = cv2.resize(query_img, (299, 299))
+
+# Preprocess the image and expand its dimensions
+x = np.expand_dims(query_img, axis=0)
+x = preprocess_input(x)
+
+# Pass the image through the model and get the output of the last convolutional layer
+conv_output = model.get_layer('conv2d_93').output
+conv_model = Model(inputs=model.input, outputs=conv_output)
+conv_features = conv_model.predict(x)
+
+# Flatten the features and print the feature vector
+flat_features = conv_features.flatten()
+print(flat_features)
+# Define the dataset folder path
+dataset_path = "/content/drive/MyDrive/Covid19-dataset/test"
+
+# Define the folder names
+folders = ["Covid" , "Normal", "Viral Pneumonia"]
+
+# Open the output file
+with open('output_deepfeatures.txt', 'w') as f:
+    # Iterate over each folder
+    for folder in folders:
+        # Define the folder path for the current folder
+        folder_path = os.path.join(dataset_path,folder)
+        # Iterate over each image file in the folder
+        for filename in os.listdir(folder_path):
+            # Load the image
+            img_path = os.path.join(folder_path, filename)
+            img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+            # Compute the Flat features from InceptionV3
+            img = cv2.resize(img, (299, 299))
+            img = np.expand_dims(img, axis=0)
+            img = preprocess_input(img)
+            # Pass the database image through the model and get the output of the last convolutional layer
+            conv_output = model.get_layer('conv2d_93').output
+            conv_model = Model(inputs=model.input, outputs=conv_output)
+            conv_features = conv_model.predict(img)
+            # Flatten the features and print the feature vector
+            flatd_features = conv_features.flatten()
+            print(len(flatd_features))
+            # Calculate the distance between the query image features and the current database image features
+            disd1 = 0.0
+            dischi = 0.0
+            for i in range(0, 12288):
+                if(flatd_features[i] != 0 or flat_features[i] != 0):
+                    disd1 = disd1 + abs(float(flatd_features[i]-flat_features[i]))/(1+flat_features[i]+flatd_features[i])
+                    dischi = dischi + ((float(flatd_features[i]-flat_features[i]))**2)/(1+flat_features[i]+flatd_features[i])
+                    #if(img_path=='/content/drive/MyDrive/Covid19-dataset/test/Viral Pneumonia/0113.jpeg'):
+                     # print(disd1,dischi)
+
+                        
+            # Write the image path and distance value to the output file
+            disd1 = format(disd1, ".2f")
+            dischi = format(dischi, ".2f")
+            f.write(img_path)
+            f.write('\n')
+            f.write(str(disd1))
+            f.write('\n')
+            f.write(str(dischi))
+            f.write('\n')
+            print(disd1,dischi,'next')
+print(img_path)            
+print(flatd_features)
+

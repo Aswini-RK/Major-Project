@@ -1,0 +1,79 @@
+# LBP Code 
+
+import numpy as np
+import cv2
+import os
+
+# Define the LBP operator
+def compute_lbp(img):
+    # Add padding to the image
+    padded_img = np.pad(img, ((1, 1), (1, 1)), mode='constant')
+    # Get the dimensions of the padded image
+    height, width = padded_img.shape
+    # Initialize the LBP image matrix
+    lbp_img = np.zeros((height-2, width-2), dtype=np.uint8)
+    # Iterate over each pixel of the padded image and compute LBP value
+    for i in range(1, height-1):
+        for j in range(1, width-1):
+            center_pixel = padded_img[i, j]
+            lbp_code = 0
+            if padded_img[i-1, j-1] >= center_pixel:
+                lbp_code += 1
+            if padded_img[i-1, j] >= center_pixel:
+                lbp_code += 2
+            if padded_img[i-1, j+1] >= center_pixel:
+                lbp_code += 4
+            if padded_img[i, j+1] >= center_pixel:
+                lbp_code += 8
+            if padded_img[i+1, j+1] >= center_pixel:
+                lbp_code += 16
+            if padded_img[i+1, j] >= center_pixel:
+                lbp_code += 32
+            if padded_img[i+1, j-1] >= center_pixel:
+                lbp_code += 64
+            if padded_img[i, j-1] >= center_pixel:
+                lbp_code += 128
+            lbp_img[i-1, j-1] = lbp_code
+    return lbp_img
+
+# Define the histogram computation function
+def compute_histogram(lbp_img):
+    # Compute the histogram of the LBP image
+    hist, _ = np.histogram(lbp_img, bins=256, range=(0, 255))
+    # Normalize the histogram
+    hist = hist.astype("float")
+    hist /= (hist.sum() + 1e-7)
+    return hist
+
+# Define the dataset folder path
+dataset_path = "/content/drive/MyDrive/D1_dataset_LBP"
+
+# Define the folder names
+folders = ["Covid", "Normal", "Virtual Pneumonia"]
+
+# Initialize the feature vector list
+feature_vectors = []
+
+# Open the output file
+with open('output.txt', 'w') as f:
+
+    # Iterate over each folder
+    for folder in folders:
+        # Define the folder path for the current folder
+        folder_path = os.path.join(dataset_path, folder)
+        # Iterate over each image file in the folder
+        for filename in os.listdir(folder_path):
+            # Load the image
+            img_path = os.path.join(folder_path, filename)
+            img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+            # Compute the LBP image and histogram
+            lbp_img = compute_lbp(img)
+            hist = compute_histogram(lbp_img)
+            # Add the histogram to the feature vector list
+            feature_vectors.append(hist)
+            # Write the image path and feature vector to the output file
+            f.write("Image: " + img_path + "\n")
+            f.write("Feature vector: " + str(hist) + "\n\n")
+            # Display the image and its feature vector
+            print("Image: ", img_path)
+            print("Feature vector: ", hist)

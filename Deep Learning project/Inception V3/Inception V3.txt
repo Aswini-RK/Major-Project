@@ -1,0 +1,103 @@
+# Importing required libraries 
+
+import os 
+import cv2
+import glob
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from keras.layers import Dense
+from keras.models import Sequential
+from keras.preprocessing import image
+from PIL import Image
+from tensorflow.keras.optimizers import RMSprop
+from keras.optimizers import RMSprop
+from tensorflow.keras.models import Model
+from keras.callbacks import ReduceLROnPlateau
+from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications.inception_v3 import InceptionV3
+from tensorflow.keras.applications.inception_v3 import preprocess_input
+from keras.layers import Convolution2D,Dense,MaxPool2D,Activation,Dropout,Flatten
+from keras.layers import Input, Add, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D, AveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
+
+# train and test images 
+
+def get_files(directory):
+  if not os.path.exists(directory):
+    return 0
+  count=0
+  # crawls inside folders
+  for current_path,dirs,files in os.walk(directory):
+    for dr in dirs:
+      count+= len(glob.glob(os.path.join(current_path,dr+"/*")))
+  return count
+train_dir ="/content/drive/MyDrive/Covid19-dataset/train"
+test_dir="/content/drive/MyDrive/Covid19-dataset/test"
+
+
+#train file image count
+train_samples =get_files(train_dir)
+#to get tags
+num_classes=len(glob.glob(train_dir+"/*")) 
+#test file image count
+test_samples=get_files(test_dir)
+print(num_classes,"Classes")
+print(train_samples,"Train images")
+print(test_samples,"Test images")
+
+
+
+# Define dataset directory path
+dataset_path = "/content/drive/MyDrive/Covid19-dataset"
+for filename in os.listdir(dataset_path):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+        # Open grayscale image
+        gray_img = Image.open(os.path.join(dataset_path, filename))
+
+        # Convert to RGB
+        rgb_img = gray_img.convert("RGB")
+
+        # Save RGB image with same filename
+        rgb_img.save(os.path.join(dataset_path, filename))
+
+
+# Augumentation 
+
+train_datagen=ImageDataGenerator(
+    rescale=1./255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True
+    )                       
+test_datagen=ImageDataGenerator(rescale=1./255)
+
+input_shape=(299,299,3)
+train_generator =train_datagen.flow_from_directory(train_dir,target_size=(299,299),batch_size=32)
+test_generator=test_datagen.flow_from_directory(test_dir,shuffle=True,target_size=(299,299),batch_size=32)
+
+IMAGE_SIZE = [299,299,3]
+inception = InceptionV3(input_shape=(299,299, 3), weights='imagenet', include_top=True)
+for layer in inception.layers:
+    layer.trainable = True
+
+# Model layers -> can add more if required
+x = Flatten()(inception.output)
+prediction = Dense(num_classes, activation='softmax')(x)
+# Create a model object
+model = Model(inputs=inception.input, outputs=prediction)
+# View the structure of the model
+model.summary()
+
+# Training 
+
+model.compile(loss='categorical_crossentropy',optimizer='RMSprop',metrics=['accuracy'])
+history4 = model.fit(
+    train_generator,
+    steps_per_epoch=None,
+    epochs=100,
+    validation_data=test_generator,
+    validation_steps=1,
+    verbose=1,
+    callbacks=[ReduceLROnPlateau(monitor='val_loss', factor=0.3,patience=3, min_lr=0.000001)],
+    shuffle=True)

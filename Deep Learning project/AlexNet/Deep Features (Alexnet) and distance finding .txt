@@ -1,0 +1,140 @@
+# Initializing the CNN
+model = Sequential()
+# Convolution Step 1
+model.add(Convolution2D(96, 11, strides = (4, 4), padding = 'valid', input_shape=(227, 227, 1), activation = 'relu'))
+##### to find distance between the flatten feature of last convolution (5th layer of alexnet) and the images in test datset (query images )
+
+
+# Max Pooling Step 1
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2), padding = 'valid'))
+model.add(BatchNormalization())
+# Convolution Step 2
+model.add(Convolution2D(256, 11, strides = (1, 1), padding='valid', activation = 'relu'))
+# Max Pooling Step 2
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2), padding='valid'))
+model.add(BatchNormalization())
+# Convolution Step 3
+model.add(Convolution2D(384, 3, strides = (1, 1), padding='valid', activation = 'relu'))
+model.add(BatchNormalization())
+# Convolution Step 4
+model.add(Convolution2D(384, 3, strides = (1, 1), padding='valid', activation = 'relu'))
+model.add(BatchNormalization())
+# Convolution Step 5
+model.add(Convolution2D(256, 3, strides=(1,1), padding='valid', activation = 'relu'))
+# Max Pooling Step 3
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2), padding = 'valid'))
+model.add(BatchNormalization())
+# Flattening Step
+model.add(Flatten())
+# Full Connection Step
+model.add(Dense(units = 4096, activation = 'relu'))
+model.add(Dropout(0.4))
+model.add(BatchNormalization())
+model.add(Dense(units = 4096, activation = 'relu'))
+model.add(Dropout(0.4))
+model.add(BatchNormalization())
+model.add(Dense(units = 1000, activation = 'relu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+model.add(Dense(units = num_classes, activation = 'softmax'))
+model.summary()
+
+model.compile(loss='categorical_crossentropy',optimizer='Adam',metrics=['accuracy'])
+history = model.fit(    
+    train_generator,
+    steps_per_epoch=None,
+    epochs=250,
+    validation_data=test_generator,
+    validation_steps=None,
+    verbose=1,
+    callbacks=[ReduceLROnPlateau(monitor='val_loss', factor=0.3,patience=3, min_lr=0.000001)],
+    shuffle=True)
+
+
+import numpy as np
+from tensorflow.keras.preprocessing import image
+from keras.models import load_model
+import cv2
+from google.colab import files
+
+# Load the AlexNet model
+model = load_model('/content/drive/MyDrive/Colab Notebooks/MyModels/model__Alexnet.h5')
+
+# Upload the query image
+uploaded = files.upload()
+query_image_data = next(iter(uploaded.values()))
+
+# Decode the query image data using OpenCV
+query_img = cv2.imdecode(np.frombuffer(query_image_data, np.uint8), cv2.IMREAD_GRAYSCALE)
+
+# Preprocess the query image
+query_img = cv2.resize(query_img, (227, 227))
+query_img = np.expand_dims(query_img, axis=2)
+query_img = np.expand_dims(query_img, axis=0)
+query_img = query_img.astype('float32') / 255.
+
+# Pass the query image through the model and get the output of the last convolutional layer
+conv_output = model.get_layer('conv2d_4').output
+conv_model = Model(inputs=model.input, outputs=conv_output)
+conv_features = conv_model.predict(query_img)
+#print(sum(conv_features))
+# Flatten the features and print the feature vector
+flat_features = conv_features.flatten()
+#for i in range(len(flat_features)):
+#    print(flat_features[i])
+#print(sum(flat_features))
+print(len(flat_features))
+#print(query_img.shape)
+
+# Define the dataset folder path
+dataset_path = "/content/drive/MyDrive/Covid19-dataset/test"
+
+# Define the folder names
+folders = ["Covid" , "Normal", "Viral Pneumonia"]
+#print('database process starts')
+# Open the output file
+with open('output_deepfeatures.txt', 'w') as f:
+  print(flat_features)
+# Iterate over each folder
+  for folder in folders:
+    # Define the folder path for the current folder
+    folder_path = os.path.join(dataset_path,folder)
+    # Iterate over each image file in the folder
+    for filename in os.listdir(folder_path):
+      # Load the image
+      img_path = os.path.join(folder_path, filename)
+      img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+      # Compute the Flat features from alexnet
+      img = cv2.resize(img, (227, 227))
+      img = np.expand_dims(img, axis=2)
+      img = np.expand_dims(img, axis=0)
+      img = img.astype('float32') / 255
+     # print('img',img)
+# Pass the database image through the model and get the output of the last convolutional layer
+      conv_output = model.get_layer('conv2d_4').output
+      conv_model = Model(inputs=model.input, outputs=conv_output)
+      conv_features = conv_model.predict(img)
+# Flatten the features and print the feature vector
+      flatd_features = conv_features.flatten()
+      #print(len(flatd_features))
+      print(flatd_features)
+#d1 diatance calculation
+      disd1=0.0
+      dischi=0.0
+      for i in range(0,1024):
+        if(flatd_features[i] !=0 or flat_features[i] !=0):
+          disd1 = disd1 + abs(float(flatd_features[i]-flat_features[i]))/(1+flat_features[i]+flatd_features[i])
+          #print('inside', str(disd1))
+          dischi = dischi + ((float(flatd_features[i]-flat_features[i]))**2)/(1+flat_features[i]+flatd_features[i])
+          #print('inside',dischi)
+        
+     # Write the image path and distance value to the output file
+      disd1 = format(disd1, ".2f")
+      dischi = format(dischi, ".2f")
+      f.write(img_path)
+      f.write('\n')
+      f.write(str(disd1))
+      f.write('\n')
+      f.write(str(dischi))
+      f.write('\n')
+      print(disd1,dischi,'next')

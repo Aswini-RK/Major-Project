@@ -1,0 +1,202 @@
+dataset_1 final code (small dataset)
+#1
+from google.colab import drive
+drive.mount('/content/drive', force_remount=True)
+#2
+import os 
+import cv2
+import glob
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from keras.layers import Dense
+from keras.models import Sequential
+from keras.preprocessing import image
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.models import Model
+from keras.callbacks import ReduceLROnPlateau
+from keras.preprocessing.image import ImageDataGenerator
+from keras.layers import Convolution2D,Dense,MaxPool2D,Activation,Dropout,Flatten
+from keras.layers import Input, Add, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D, AveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
+#3
+def get_files(directory):
+  if not os.path.exists(directory):
+    return 0
+  count=0
+  # crawls inside folders
+  for current_path,dirs,files in os.walk(directory):
+    for dr in dirs:
+      count+= len(glob.glob(os.path.join(current_path,dr+"/*")))
+  return count
+train_dir ="/content/drive/MyDrive/Covid19-dataset/train"
+test_dir="/content/drive/MyDrive/Covid19-dataset/test"
+#4
+ #train file image count
+train_samples =get_files(train_dir)
+#to get tags
+num_classes=len(glob.glob(train_dir+"/*")) 
+#test file image count
+test_samples=get_files(test_dir)
+
+print(num_classes,"Classes")
+print(train_samples,"Train images")
+print(test_samples,"Test images")
+#5
+train_datagen=ImageDataGenerator(
+    rescale=1./255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True
+    )
+test_datagen=ImageDataGenerator(rescale=1./255)
+#6
+input_shape=(227,227,1)
+train_generator =train_datagen.flow_from_directory(train_dir,target_size=(227,227),batch_size=32,class_mode='categorical',
+        color_mode='grayscale')
+test_generator=test_datagen.flow_from_directory(test_dir,shuffle=True,target_size=(227,227),batch_size=32,class_mode='categorical',
+        color_mode='grayscale')
+#7
+# Importing Keras libraries and packages
+from keras.models import Sequential
+from keras.layers import Convolution2D
+from keras.layers import MaxPooling2D
+from keras.layers import Flatten
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import BatchNormalization
+#8
+# Initializing the CNN
+model = Sequential()
+# Convolution Step 1
+model.add(Convolution2D(96, 11, strides = (4, 4), padding = 'valid', input_shape=(227, 227, 1), activation = 'relu'))
+# Max Pooling Step 1
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2), padding = 'valid'))
+model.add(BatchNormalization())
+# Convolution Step 2
+model.add(Convolution2D(256, 11, strides = (1, 1), padding='valid', activation = 'relu'))
+# Max Pooling Step 2
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2), padding='valid'))
+model.add(BatchNormalization())
+# Convolution Step 3
+model.add(Convolution2D(384, 3, strides = (1, 1), padding='valid', activation = 'relu'))
+model.add(BatchNormalization())
+# Convolution Step 4
+model.add(Convolution2D(384, 3, strides = (1, 1), padding='valid', activation = 'relu'))
+model.add(BatchNormalization())
+# Convolution Step 5
+model.add(Convolution2D(256, 3, strides=(1,1), padding='valid', activation = 'relu'))
+# Max Pooling Step 3
+model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2), padding = 'valid'))
+model.add(BatchNormalization())
+# Flattening Step
+model.add(Flatten())
+# Full Connection Step
+model.add(Dense(units = 4096, activation = 'relu'))
+model.add(Dropout(0.4))
+model.add(BatchNormalization())
+model.add(Dense(units = 4096, activation = 'relu'))
+model.add(Dropout(0.4))
+model.add(BatchNormalization())
+model.add(Dense(units = 1000, activation = 'relu'))
+model.add(Dropout(0.2))
+model.add(BatchNormalization())
+model.add(Dense(units = num_classes, activation = 'softmax'))
+model.summary()
+#9
+model.compile(loss='categorical_crossentropy',optimizer='Adam',metrics=['accuracy'])
+history1= model.fit(    
+    train_generator,
+    steps_per_epoch=None,
+    epochs=10,
+    validation_data=test_generator,
+    validation_steps=None,
+    verbose=1,
+    callbacks=[ReduceLROnPlateau(monitor='val_loss', factor=0.3,patience=3, min_lr=0.000001)],
+    shuffle=True)
+
+#10
+import numpy as np
+from keras.models import load_model
+from keras.preprocessing import image
+model.save('/content/drive/MyDrive/Colab Notebooks/Model/Covid19_dataset_alexnet.h5')
+ #11
+from keras.models import load_model
+
+# Load the saved model
+model_alexnet = load_model('/content/drive/MyDrive/Colab Notebooks/Model/Covid19_dataset_alexnet.h5')
+
+
+scores = model_alexnet.evaluate(test_generator)
+
+# Print the test accuracy
+print(f"Test Accuracy: {scores[1]*100}")
+#12
+# Predict the label of the test_gen
+pred = model.predict(test_generator,verbose=1)
+pred = np.argmax(pred,axis=1)
+
+# Map the label
+labels = (train_generator.class_indices)
+labels = dict((v,k) for k,v in labels.items())
+pred = [labels[k] for k in pred]
+#13
+from sklearn.metrics import classification_report
+
+# Predict the label of the test_gen
+pred = model.predict(test_generator,verbose=1)
+pred = np.argmax(pred,axis=1)
+
+# Map the label
+labels = (train_generator.class_indices)
+labels = dict((v,k) for k,v in labels.items())
+pred = [labels[k] for k in pred]
+
+# Get the true labels
+y_test = list(test_generator.classes)
+y_test = [labels[k] for k in y_test]
+
+# Calculate classification report
+print(classification_report(y_test, pred, zero_division=1))
+
+#14
+from keras.models import Sequential
+from keras.layers import Dense
+import matplotlib.pyplot as plt
+import numpy
+
+print(history1.history.keys())
+
+plt.plot(history1.history['accuracy'])
+plt.plot(history1.history['val_accuracy'])
+plt.title('model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+# summarize history for loss
+plt.plot(history1.history['loss'])
+plt.plot(history1.history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+#15
+classes=list(train_generator.class_indices.keys())
+# Pre-Processing test data same as train data.
+def prepare(img_path):
+    img = tf.keras.preprocessing.image.load_img(img_path, target_size=(227, 227), color_mode='grayscale')
+    x = tf.keras.preprocessing.image.img_to_array(img)
+    x = x / 255
+    return np.expand_dims(x, axis=0)
+
+img_url="/content/drive/MyDrive/Covid19-dataset/test/Covid/COVID-00003b.jpg"
+result_alexnet = model_alexnet.predict([prepare(img_url)])
+disease = tf.keras.preprocessing.image.load_img(img_url)
+
+plt.imshow(disease)
+
+classresult=np.argmax(result_alexnet,axis=1)
+print(classes[classresult[0]])    
+

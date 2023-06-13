@@ -1,0 +1,128 @@
+# VGG 16 
+
+import os 
+import cv2
+import glob
+import pandas as pd
+import numpy as np
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from keras.layers import Dense
+from keras.models import Sequential
+from keras.preprocessing import image
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.models import Model
+from keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.applications.vgg16 import VGG16
+from PIL import Image
+from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications.inception_v3 import preprocess_input
+from keras.layers import Convolution2D,Dense,MaxPool2D,Activation,Dropout,Flatten
+from keras.layers import Input, Add, Dense, Activation, ZeroPadding2D, BatchNormalization, Flatten, Conv2D, AveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
+# Train and test files 
+
+def get_files(directory):
+  if not os.path.exists(directory):
+    return 0
+  count=0
+  # crawls inside folders
+  for current_path,dirs,files in os.walk(directory):
+    for dr in dirs:
+      count+= len(glob.glob(os.path.join(current_path,dr+"/*")))
+  return count
+train_dir ="/content/drive/MyDrive/train"
+test_dir="/content/drive/MyDrive/test"
+
+ #train file image count
+train_samples =get_files(train_dir)
+#to get tags
+num_classes=len(glob.glob(train_dir+"/*")) 
+#test file image count
+test_samples=get_files(test_dir)
+print(num_classes,"Classes")
+print(train_samples,"Train images")
+print(test_samples,"Test images")
+
+
+# Define dataset directory path
+dataset_path = "/content/drive/MyDrive/Covid19-dataset"
+
+# Loop over all image files in dataset directory
+for filename in os.listdir(dataset_path):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+        # Open grayscale image
+        gray_img = Image.open(os.path.join(dataset_path, filename))
+
+        # Convert to RGB
+        rgb_img = gray_img.convert("RGB")
+
+        # Save RGB image with same filename
+        rgb_img.save(os.path.join(dataset_path, filename))
+
+
+train_datagen=ImageDataGenerator(
+    rescale=1./255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True
+    )
+test_datagen=ImageDataGenerator(rescale=1./255)
+
+
+input_shape=(224,224,3)
+train_generator =train_datagen.flow_from_directory(train_dir,target_size=(224,224),batch_size=32)
+test_generator=test_datagen.flow_from_directory(test_dir,shuffle=True,target_size=(224,224),batch_size=32)
+
+validation_generator = train_datagen.flow_from_directory(
+                       test_dir,
+                       target_size=(224, 224),
+                       batch_size=32)
+
+
+def create_Base_model_from_VGG16():  
+    model = VGG16(
+        weights = "imagenet",
+        include_top=True, 
+        input_shape = (224,224, 3) # goruntu boyutu
+        ) 
+    for layer in model.layers:
+      layer.trainable = True
+    return model 
+create_Base_model_from_VGG16().summary()
+
+def add_custom_layers():
+    model = create_Base_model_from_VGG16()
+    x = model.output
+    x = tf.keras.layers.Flatten()(x)
+    x = tf.keras.layers.Dense(256, activation="relu")(x)
+    predictions = tf.keras.layers.Dense(num_classes, activation="softmax")(x)   
+    # creating the final model 
+    final_model = tf.keras.models.Model(
+        inputs = model.input, 
+        outputs = predictions)
+     
+    final_model.compile(loss='categorical_crossentropy', optimizer='RMSprop', metrics=['accuracy'])  
+    return final_model
+
+add_custom_layers().summary()
+
+validation_generator = train_datagen.flow_from_directory(
+                       test_dir, # same directory as training data
+                       target_size=(224, 224),
+                       batch_size=32)
+
+# training 
+
+model_from_vgg16 = add_custom_layers()
+history2 = model_from_vgg16.fit(
+    train_generator,
+    steps_per_epoch=None,
+    epochs=100,
+    validation_data=validation_generator,
+    validation_steps=None,
+    verbose=1,
+    callbacks=[ReduceLROnPlateau(monitor='val_loss', factor=0.3,patience=3, min_lr=0.000001)],
+    use_multiprocessing=False,
+    shuffle=True
+    )
+
