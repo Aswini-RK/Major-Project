@@ -1,0 +1,134 @@
+PYTHON PROGRAM 
+1. To print the Square
+
+n=5
+for i in range(n):
+    for j in range(n):
+        print("*",end = " ")
+    print()  # for the new line  
+=================================================
+
+2. to print right angle triangle
+
+n=5
+for i in range(n):
+    for j in range(i+1):
+        print("*",end = " ")
+    print()    
+==================================================
+3. To print right angle triangle in Upside direction
+
+n=5
+for i in range(n):
+    for j in range(i,n):
+        print("*",end = " ")
+    print() 
+=======================================================
+4. to print left triangle
+
+n=5
+for i in range(n):
+    for j in range(i,n):
+        print(" ",end = "")
+    for j in range(i+1):
+        print("*",end = "")    
+        
+    print()    
+==============================================================
+5. To print left angle triangle in Upside direction
+
+n=5
+for i in range(n):
+    for j in range(i+1):
+        print(" ",end = "")
+    for j in range(i,n):
+        print("*",end = "")    
+        
+    print()    
+================================================================
+6. To print in Pyramid Shape 
+
+n=5
+for i in range(n):
+    for j in range(0,n-i-1):
+        print(" ",end = "")
+    for j in range(0,i+1):
+        print("*",end = " ")    
+        
+    print()    
+
+==========================================================
+7.To print the diamond shape
+
+n=5
+for i in range(n):
+    for j in range(0,n-i-1):
+        print(" ",end = "")
+    for j in range(0,i+1):
+        print("*",end = " ")
+    print()
+for i in range(n):
+    for j in range(0,i+1):
+        print(" ",end = "")
+    for j in range(0,n-i-1):
+        print("*",end = " ")
+    print()
+   
+=====================================================================
+8. Print the numbers pattern 
+
+num = 5
+for i in range(num):
+    for j in range(i+1):
+        print(j+1,end=" ")
+    print()    
+      
+o/p -> 1
+       1 2
+       1 2 3
+===========================================================================  
+9. To print the Number in continous.
+
+num = 5
+num_new=1
+for i in range(num):
+    for j in range(i+1):
+        print(num_new,end = " ")
+        num_new+=1
+    print()
+
+o/p -> 1
+       2 3
+       4 5 6
+       7 8  9 10
+===============================================================================		   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
