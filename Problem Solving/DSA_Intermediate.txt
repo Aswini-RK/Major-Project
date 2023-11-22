@@ -1,0 +1,49 @@
+PYTHON INTERMEDIATE PROBLEMS IN ARRAY                                                                                           
+_______________________________________________________________________________________________________________________
+
+1. Program to cyclically rotate an array by one
+
+def cyclicRotate(arr,n):
+    if n ==0:
+        return "The array is null"
+    for i in reversed(range(n-1)):
+        arr[i],arr[i-1]=arr[i-1],arr[i]
+    return arr
+        
+
+arr=[1,2,3,4,5] 
+n = len(arr)
+print(cyclicRotate(arr,n))
+o/p-> [5,1,2,3,4]
+==========================================================================================================
+2. Find the Missing Number
+
+def missingNumber(arr,n):
+    for i in range(1,n+1):
+        if i not in arr:
+            return i
+            
+arr=[1,2,3,5]
+n = len(arr)
+print(missingNumber(arr,n))
+o/p -> 4
+______________________________(or)______________________________________________
+def findMissing(arr, N):
+   
+    # create a list of zeroes
+    temp = [0] * (N+1) # [0,0,0,0,0]
+ 
+    for i in range(0, N): #[1,1,1,0,1]
+        temp[arr[i] - 1] = 1
+ 
+    for i in range(0, N+1): 
+        if(temp[i] == 0):
+            ans = i + 1 # 3+1 = 4
+ 
+    print(ans)
+arr = [1, 2, 3, 5]
+N = len(arr)
+findMissing(arr, N)
+o/p-> 4
+========================================================================================================================
+ 
