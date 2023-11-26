@@ -45,8 +45,8 @@ arr = [1, 2, 3, 5]
 N = len(arr)
 findMissing(arr, N)
 o/p-> 4
-================================================================================================================3.Count pairs with given sum
-
+================================================================================================================
+3.Count pairs with given sum
 def countPairs(arr,k,n):
     count=0
     for i in range(n):
@@ -61,4 +61,21 @@ n = len(arr)
 print("Pair with sum", k ,"is :",countPairs(arr,k,n))
 o/p-> Pair with sum 6 is : 2
 ================================================================================================================
+4. To rotate an array by K times
+def rotate(arr,start,end):
+    while start<end:
+        arr[start],arr[end]=arr[end],arr[start]
+        start+=1 
+        end-=1 
+    return arr    
+
+def rotateArray(arr,k):
+    k=k%len(arr)
+    rotate(arr,0,len(arr)-1)
+    rotate(arr,0,k-1)
+    rotate(arr,k,len(arr)-1)
+    return arr 
+print(rotateArray([1,2,3,4,5],3))    
+o/p-> [5,4,3,1,2]
+======================================================================================================================
  
