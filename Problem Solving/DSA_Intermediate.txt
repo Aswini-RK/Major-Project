@@ -61,7 +61,7 @@ n = len(arr)
 print("Pair with sum", k ,"is :",countPairs(arr,k,n))
 o/p-> Pair with sum 6 is : 2
 ================================================================================================================
-4. To rotate an array by K times
+4. Rotate an array by K times to right side
 def rotate(arr,start,end):
     while start<end:
         arr[start],arr[end]=arr[end],arr[start]
