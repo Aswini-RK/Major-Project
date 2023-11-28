@@ -93,4 +93,18 @@ n = len(arr)
 print(findDuplicate(arr,n))
 o/p-> [1,2,7,8]
 =========================================================================================================================
+6. Two Sum using hash table for O(n) time complexity and O(n) of space complexity
+
+def two_sum(arr,target):
+    num_available={}
+    for i in range(len(arr)):
+        needed_value=target-arr[i]
+        if needed_value in num_available:
+            return [i,num_available[needed_value]] # -1:1 here 1 is been accessed.
+        else:
+            num_available[arr[i]]=i 
+    return []     
+print(two_sum([2,-1,5,3],4))    
+o/p-> [2,1]
+===================================================================================================================================
  
