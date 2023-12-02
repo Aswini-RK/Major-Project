@@ -206,5 +206,16 @@ m=len(arr2)
 unionArray(arr1,arr2,m,n)
 o/p-> 1,2,3,4,5,6,7
 =======================================================================================================
+12. Write a program to print fibonacci series upto n terms in python
+num = 4
+n1, n2 = 0, 1
+print("Fibonacci Series:", n1, n2, end=" ")
+for i in range(2, num):
+    n3 = n1 + n2
+    n1 = n2
+    n2 = n3
+    print(n3, end=" ")
+o/p-> Fibonacci Series: 0 1 1 2
+===========================================================================================================
 
 
