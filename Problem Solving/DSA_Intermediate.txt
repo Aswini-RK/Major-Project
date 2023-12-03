@@ -150,13 +150,10 @@ def quickSort(arr,first,last):
         p = pivot_element(arr,first,last) 
         quickSort(arr,first,p-1)
         quickSort(arr,p+1,last)
-        
-        
-        
-        
 # Main        
 arr=[56,26,93,17,31,44]
 n=len(arr)
 quickSort(arr,0,n-1)
 print(arr)
+o/p -> [17,26,31,44,56,93]
 =======================================================================================================================================
