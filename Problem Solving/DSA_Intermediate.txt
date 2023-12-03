@@ -128,3 +128,35 @@ def sortedArray(arr):
 print(sortedArray([3,1,2,7]))
 o/p-> [1,4,9,49]
 ========================================================================================================================================= 
+8. Quick Sort
+def pivot_element(arr,first,last):
+    pivot=arr[first]
+    left=first+1
+    right=last 
+    while True:
+        while left<=right and arr[left]<=pivot:
+            left+=1 
+        while left<=right and arr[right]>=pivot:
+            right-=1 
+        if left>right:
+            break
+        else: #(when both while loop and if loop is unstatisfied)
+            arr[left],arr[right]=arr[right],arr[left]
+    # ( when left>right it break the pgm i.e it comes out of the fn and return this)        
+    arr[first],arr[right]=arr[right],arr[first]      
+    return right
+def quickSort(arr,first,last):
+    if first<last:
+        p = pivot_element(arr,first,last) 
+        quickSort(arr,first,p-1)
+        quickSort(arr,p+1,last)
+        
+        
+        
+        
+# Main        
+arr=[56,26,93,17,31,44]
+n=len(arr)
+quickSort(arr,0,n-1)
+print(arr)
+=======================================================================================================================================
