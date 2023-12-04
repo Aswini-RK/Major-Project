@@ -217,5 +217,25 @@ for i in range(2, num):
     print(n3, end=" ")
 o/p-> Fibonacci Series: 0 1 1 2
 ===========================================================================================================
+=========================================================================================================
+13.To find strong number 
+
+integer = int(input("enter a number: "))
+sum =0
+temp = integer
+while integer!=0:
+    digit= integer%10
+    fact =1
+    for i in range(1,digit+1):
+        fact = fact * i
+    sum+= fact 
+    integer//=10
+if sum==temp:
+    print("It is a strong number")
+else:
+    print("Not a strong number")
+        
+ o/p-> It is a strong number   
+=======================================================================================================================
 
 
