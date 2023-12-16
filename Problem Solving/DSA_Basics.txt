@@ -239,5 +239,20 @@ else:
         
  o/p-> It is a strong number   
 =======================================================================================================================
+14. To find It's a Harshad Number
+def strongNumber(num):
+    temp = num
+    sum =0
+    while temp!=0:
+        n = temp%10
+        sum+=n
+        temp=temp//10 
+    return sum
+num = int(input("Enter a number : "))
+if num%strongNumber(num)==0:
+    print("Yes, It's a Harshad Number") 
+else:
+    print("No, It's a Harshad Number")
+==============================================================================================================
 
 
