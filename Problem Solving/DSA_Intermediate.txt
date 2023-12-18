@@ -209,4 +209,18 @@ print "Common elements are",
 findCommon(ar1, ar2, ar3, n1, n2, n3)
 o/p->Common elements are 20,80 
 ================================================================================================================================
+def firstRepeatElement(arr):
+    for i in range(n):
+        for j in range(i+1,n):
+            if arr[i]==arr[j]:
+                return arr[i],i
+                break
+           
+arr=[10,5,3,4,3,5,6]
+n = len(arr)
+num = firstRepeatElement(arr)
+print("The First Repeating Number along with its index is :",num)
+
+o/p-> The First Repeating Number along with its index is : (5,1)
+
 
