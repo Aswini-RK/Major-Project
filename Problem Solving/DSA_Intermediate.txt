@@ -222,5 +222,34 @@ num = firstRepeatElement(arr)
 print("The First Repeating Number along with its index is :",num)
 
 o/p-> The First Repeating Number along with its index is : (5,1)
+______________________________________(or)__________________________________________________________
+Program to find first repeating element in arr[]
+
+def printFirstRepeating(arr, n):
+    myset = {}
+
+    # Traverse the input array from right to left
+    for i in range(n):
+
+        # If element is already in hash set,
+        # update Min
+        if arr[i] in myset:
+            Min= i
+
+        else: # Else add element to hash set
+            myset[arr[i]] = 1
+
+    if (Min != -1):
+        print("The first repeating element is",
+                  arr[Min])
+    else:
+        print("There are no repeating elements")
+
+
+arr = [10, 5, 3, 4, 3, 5, 6]
+n = len(arr)
+printFirstRepeating(arr, n)
+o/p -> The first repeating element is 5
+===============================================================================================================================
 
 
