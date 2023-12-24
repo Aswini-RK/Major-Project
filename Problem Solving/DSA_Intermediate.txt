@@ -251,5 +251,39 @@ n = len(arr)
 printFirstRepeating(arr, n)
 o/p -> The first repeating element is 5
 ===============================================================================================================================
+12. from collections import defaultdict
+def firstNonRepeating(arr, n):
+    mp = defaultdict(lambda: 0)
+    for i in range(n):
+        mp[arr[i]] += 1
+    for i in range(n):
+        if mp[arr[i]] == 1:
+            return arr[i]
+    return -1
+ 
+arr = [9, 4, 9, 6, 7, 4]
+n = len(arr)
+print("The First NonRepeating is :",firstNonRepeating(arr, n))
+o/p-> The First NonRepeating is :6
+___________________________________________(or)____________________________________
+def firstNonRepeating(arr, n):
+    mp = {}
+    for i in range(n):
+        if arr[i] in mp:
+            mp[arr[i]] += 1 
+        else:
+            mp[arr[i]] = 1 
+            
+    for i in range(n):
+        if mp[arr[i]] == 1:
+            return arr[i]
+    return -1
+ 
+arr = [9, 4, 9, 6, 7, 4]
+n = len(arr)
+print("The First NonRepeating is :",firstNonRepeating(arr, n))
+o/p-> The First NonRepeating is :6
+================================================================================================================================
+
 
 
