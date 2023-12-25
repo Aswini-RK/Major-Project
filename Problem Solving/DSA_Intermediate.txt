@@ -284,6 +284,29 @@ n = len(arr)
 print("The First NonRepeating is :",firstNonRepeating(arr, n))
 o/p-> The First NonRepeating is :6
 ================================================================================================================================
+def countSubarrWithEqualZeroAndOne(arr,n):
+    sum=0
+    count=0
+    hash_table={} 
+    for i in range(n):
+        if arr[i]==0:
+            arr[i]=-1
+        sum+=arr[i]  
+        if (sum==0):
+            count+=1
+        if (sum in hash_table):
+            count+=hash_table[sum] 
+        hash_table[sum] = hash_table.get(sum,0)+1 
+            
+    return count
+
+
+
+arr= [1, 0, 0, 1, 1, 0, 0, 1]
+n = len(arr)
+print("The count of the total sub array is :",countSubarrWithEqualZeroAndOne(arr,n))
+o/p-> The count of the total sub array is :12
+======================================================================================================================================================
 
 
 
