@@ -277,4 +277,26 @@ res= friendlyPair(num1,num2)
 print(res)
 o/p -> yes, 6 nad 28  are friendly pair
 ================================================================================================================================================================
+16. To check Armstrong Number or not.
+
+def armstrongNumber(num,n):
+    temp,sum=num,0
+    while temp!=0:
+        num1=temp%10
+        sum+=pow(num1,n)
+        temp=temp//10
+    return sum
+    
+num =int(input("Enter a number: ")) # 371
+n = len(str(num))
+result = armstrongNumber(num,n)
+if result==num:
+    print("yes,", num ,"It is Armstrong Number")
+else:
+    print("No,It is not a Armstrong Number")
+o/p-> yes,It is Armstrong Number
+=============================================================================================================================
+
+ 
+
 
