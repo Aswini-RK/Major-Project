@@ -284,7 +284,7 @@ n = len(arr)
 print("The First NonRepeating is :",firstNonRepeating(arr, n))
 o/p-> The First NonRepeating is :6
 ================================================================================================================================
-def countSubarrWithEqualZeroAndOne(arr,n):
+13. def countSubarrWithEqualZeroAndOne(arr,n):
     sum=0
     count=0
     hash_table={} 
