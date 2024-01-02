@@ -229,7 +229,7 @@ def printFirstRepeating(arr, n):
     myset = {}
 
     # Traverse the input array from right to left
-    for i in range(n):
+      for i in range(n-1,-1,-1):
 
         # If element is already in hash set,
         # update Min
