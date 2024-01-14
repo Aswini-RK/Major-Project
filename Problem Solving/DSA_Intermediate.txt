@@ -324,6 +324,19 @@ result = rearrange_alternating(input_array)
 print(result)
 o/p-> [-5,5,-2,2,-8,7,1,8,0,4]
 ========================================================================================================================================================
+15. #Find Last Digit Of a^b for Large Numbers
+Expected Time Complexity: O(|b|)
+Expected Auxiliary Space: O(1)
+
+def findLastDigit(a,b):
+    res=pow(int(a)%10,int(b),10)
+    return res
+
+a="32"
+b="2"
+print(findLastDigit(a,b))
+o/p-> 4
+==============================================================================================================================================================
 
 
 
