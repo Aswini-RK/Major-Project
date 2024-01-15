@@ -324,7 +324,7 @@ result = rearrange_alternating(input_array)
 print(result)
 o/p-> [-5,5,-2,2,-8,7,1,8,0,4]
 ========================================================================================================================================================
-15. #Find Last Digit Of a^b for Large Numbers
+15. #Find Last Digit Of a^b for Large Numbers (passed all testcases)
 Expected Time Complexity: O(|b|)
 Expected Auxiliary Space: O(1)
 
@@ -337,6 +337,22 @@ b="2"
 print(findLastDigit(a,b))
 o/p-> 4
 ==============================================================================================================================================================
+16. Given a number N. Count the number of digits in N which evenly divide N. (passed all testcases)
+
+Expected Time Complexity: O(log N)
+Expected Space Complexity: O(1)
+def evenlyDivides (N):
+        temp=N 
+        sum=0
+        while temp!=0:
+            num = temp%10
+            if num!=0 and N%num==0:
+                sum+=1 
+            temp//=10
+        return sum     
+N=22074
+o/p-> 2
+================================================================================================================================================================
 
 
 
