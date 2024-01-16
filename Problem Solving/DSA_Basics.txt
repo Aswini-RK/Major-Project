@@ -316,6 +316,22 @@ else:
 
 o/p->yes,It's an abundant number.
 ==================================================================================================================================
+16. Reverse digits (Passed all test cases)
+
+Expected Time Complexity: O(Log(N))
+Expected Space Complexity: O(1)
+ 
+def ReverseDigit(n):
+    N=str(n)
+    reverse=N[::-1]
+    res=int(reverse)
+    return res
+    
+    
+n=200
+print(ReverseDigit(n))
+o/p-> 2
+===========================================================================================================================================
 
 
 
