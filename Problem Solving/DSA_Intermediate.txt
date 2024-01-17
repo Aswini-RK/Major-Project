@@ -353,6 +353,24 @@ def evenlyDivides (N):
 N=22074
 o/p-> 2
 ================================================================================================================================================================
+17. Given a number and its reverse. Find that number raised to the power of its own reverse. Note: As answers can be very large, print the result modulo 109 +7.
+
+def power(self,N,R):
+        res=pow(N,R)
+        remainder=res%(pow(10,9)+7)
+        return remainder 
+
+------------------(or)---------------------------------------------
+def power(self,N,R):
+	p = pow(N,R,1000000007)
+        return p 
+o/p-> 4
+=======================================================================================================================================================
+    
+
+
+
+
 
 
 
