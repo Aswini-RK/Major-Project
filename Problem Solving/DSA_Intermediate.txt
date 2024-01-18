@@ -366,6 +366,21 @@ def power(self,N,R):
         return p 
 o/p-> 4
 =======================================================================================================================================================
+18.GCD of a two number # Used Euclidean algorithm to iteratively find the greatest common divisor (GCD) of two numbers
+
+Expected Time Complexity: O(log(min(A, B)))
+Expected Auxiliary Space: O
+
+def gcd(A, B):
+        while B:
+            A,B=B,A%B
+        return A   
+
+A=3
+B=6
+print(gcd(A,B))
+o/p-> 3
+=====================================================================================================================================================
     
 
 
