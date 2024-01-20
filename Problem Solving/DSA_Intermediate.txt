@@ -381,6 +381,30 @@ B=6
 print(gcd(A,B))
 o/p-> 3
 =====================================================================================================================================================
+19.Find prime number or not 
+
+Expected Time Complexity: O(sqrt(N))
+Expected Space Complexity: O(1)
+
+def primeNumber(n):
+    if n > 1:
+        for i in range(2,int(n**0.5)+1):
+            if n%i==0:
+                return 0 #Not a prime
+        return 1 #It is a prime      
+    else:
+        return 0 #Not a prime
+
+
+
+n=int(input("Enter a number: "))# 5 
+print(primeNumber(n))
+o/p-> 1 
+======================================================================================================================================================
+
+
+    
+
     
 
 
