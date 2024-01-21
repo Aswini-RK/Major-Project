@@ -343,6 +343,26 @@ n=10
 print(divisor(n))
 o/p-> [1,2,5,10]
 =====================================================================================================================================================
+18.Check whether the number is ArmStrong Number or not. If yes return yes else No
+def armstrongNumber(n,l,sum):
+    temp=n
+    while temp!=0:
+        num=temp%10
+        sum+=pow(num,l)
+        temp=temp//10
+    if sum==n:
+        return "Yes"
+    else:
+        return "No"
+        
+
+n=153
+l=len(str(n))
+sum=0
+print(armstrongNumber(n,l,sum))
+o/p-> Yes
+==================================================================================================================================================
+
 
 
 
