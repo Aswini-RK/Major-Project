@@ -362,6 +362,34 @@ sum=0
 print(armstrongNumber(n,l,sum))
 o/p-> Yes
 ==================================================================================================================================================
+19.Check whether the number is Palindrome or not. If yes return yes else No
+def palindrome(n):
+    num=str(n)
+    res=num[::-1]
+    if res==num:
+        return "Yes"
+    else:
+        return "No"
+    
+
+n=555
+print(palindrome(n))
+o/p-> Yes
+================================================================================================================================================
+20. Find Square root of a number else return the floor of squareroot of a number
+
+def squareroot(n):
+    res= n**0.5
+    if res==n:
+        return int(res)
+    else:
+        return int(n//res)
+    
+n= 5  
+print(squareroot(n))
+o/p->2
+====================================================================================================================================================
+    
 
 
 
