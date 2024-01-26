@@ -401,6 +401,32 @@ n=int(input("Enter a number: "))# 5
 print(primeNumber(n))
 o/p-> 1 
 ======================================================================================================================================================
+11. Check whether the number is Perfect Number or not. If yes return 1 else 0
+import math
+
+def isPerfectNumber(N):
+    if N == 1:
+        return 0
+    sum = 0
+    for i in range(1, int(math.sqrt(N)) + 1):
+        if N % i == 0:
+            if N / i != N:
+                sum += i + (N / i)
+            else:
+                sum += i
+    if sum == N:
+        return 1
+    else:
+        return 0
+
+N = 6
+print(isPerfectNumber(N))
+o/p-> 1
+==========================================================================================================================================================
+
+    
+
+
 
 
     
