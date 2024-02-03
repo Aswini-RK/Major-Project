@@ -487,6 +487,88 @@ n=len(arr)
 print(sort012(arr,n))
 o/p-> [0,0,1,2,2]
 ========================================================================================================================================================
+25. Check whether both the array has same element if so return 1 else return 0
+def check(A,B):
+    if len(A)!= len(B):
+        return 0
+    A.sort()
+    B.sort()
+    if A==B:
+        return 1
+    else:
+        return 0
+
+
+
+
+A=[1,2,5,4,0]
+B=[2,4,5,0,1]
+print(check(A,B))
+o/p-> return 1
+============================================================================================================================================================
+26. ARRAY ROTATION TO LEFT BY K (array are moved to left expect the k element ):
+
+def rotate(arr,start,end):
+    while start<end:
+            arr[start],arr[end]=arr[end],arr[start]
+            start+=1 
+            end-=1 
+    return arr 
+def leftRotate(arr, k, n):
+    k=k%len(arr)
+    rotate(arr,0,k-1)
+    rotate(arr,k,n-1)
+    rotate(arr,0,n-1)
+    return arr
+
+arr=[1,2,3,4,5,6,7] 
+n=len(arr)
+k=2
+print(leftRotate(arr, k, n))
+o/p-> [3,4,5,6,7,1,2]
+-----------------------------------------------------------------------------------------------------
+
+ARRAY ROTTAION TO RIGHT BY K (array are moved to right expect the k element ): 
+
+def rotate(arr,start,end):
+    while start<end:
+            arr[start],arr[end]=arr[end],arr[start]
+            start+=1 
+            end-=1 
+    return arr 
+def leftRotate(arr, k, n):
+    k=k%len(arr)
+    rotate(arr,0,n-1)
+    rotate(arr,0,k-1)
+    rotate(arr,k,n-1)
+    return arr
+
+arr=[1,2,3,4,5,6,7] 
+n=len(arr)
+k=2
+print(leftRotate(arr, k, n))
+o/p-> [6,7,1,2,3,4,5]
+
+
+-------------------------------------------------------------------------------------------------------------
+BRUTE-FORCE METHOD FOR ARRAY ROTATION TO LEFT BY K  :
+
+def rotateByElement(arr,n,k):
+    num = k%n
+    while num:
+        for i in range(n-1):
+            arr[i],arr[i+1]=arr[i+1],arr[i]
+        num-=1    
+    return arr    
+        
+
+arr=[1,2,3,4,5,6,7] 
+n=len(arr)
+k=2
+print(rotateByElement(arr,n,k))
+o/p-> [3,4,5,6,7,1,2]
+=====================================================================================================================================================
+
 
 
 
