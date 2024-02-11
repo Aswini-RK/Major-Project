@@ -605,6 +605,50 @@ P=5
 print(frequencyCount(arr, N, P))
 o/p->[0,2,2,0,1]
 =========================================================================================================================================================
+29.def hasArrayTwoCandidates(arr, n, x):
+    new_set = set()
+    for i in range(n):
+        target = x - arr[i]
+        if target in new_set:
+            return True
+        new_set.add(arr[i])
+    return False
+
+arr = [1, 4, 45, 6, 10, 8]
+n = 5
+x = 16
+print(hasArrayTwoCandidates(arr, n, x))
+o/p-> True
+===================================================================================================================================================
+30. 3 sum
+
+def find3Numbers(A, n, X):
+        # Your Code Here
+        count=0
+        for i in range(n):
+            for j in range(i+1,n):
+                for k in range(j+1,n):
+                    if A[i]+A[j]+A[k]==X:
+                        return 1
+        return count
+n = 4
+X = 6
+A= [3,2,2,3]
+print(find3Numbers(A, n, X))
+o/p-> 0
+==================================================================================================================================================
+
+
+
+
+
+
+
+
+            
+
+
+
 
 
 
