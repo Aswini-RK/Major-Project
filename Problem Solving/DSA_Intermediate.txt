@@ -710,6 +710,49 @@ findFourElements(arr, n, X)
 
 o/p-> [20,30,40,1]
 =========================================================================================================================================================
+25. Intersection of an Array
+
+def NumberofElementsInIntersection(self,a, b, n, m):
+        count = 0
+        set_a = set(a)
+        counted = set()  
+        for i in range(m):
+            if b[i] in set_a and b[i] not in counted:
+                count += 1
+                counted.add(b[i])  # Mark the element as counted
+        return count 
+
+n = 6
+m = 6
+a = [1, 2, 3, 4, 5, 6]
+b = [3, 4, 5,5, 6, 7] 
+print(intersectionArray(a,b,n,m))
+o/p-> 4
+------------------------------------------------------------(or)-------------------------------------------
+def intersectionArray(a,b,n,m):
+    count=0
+    res={}
+    dup=[]
+    for i in range(n):
+        if a[i] not in res:
+            res[a[i]]=i 
+    for i in range(m):
+        if b[i] in res and b[i] not in dup:
+            count+=1  
+            dup.append(b[i])
+    return count      
+
+
+n = 6
+m = 6
+a = [1, 2, 3, 4, 5, 6]
+b = [3, 4, 5,5, 6, 7] 
+print(intersectionArray(a,b,n,m))
+o/p-> 4
+===========================================================================================================================================
+
+
+
 
 
 
