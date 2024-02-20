@@ -710,7 +710,7 @@ findFourElements(arr, n, X)
 
 o/p-> [20,30,40,1]
 =========================================================================================================================================================
-25. Intersection of an Array
+33. Intersection of an Array
 
 def NumberofElementsInIntersection(self,a, b, n, m):
         count = 0
@@ -750,6 +750,46 @@ b = [3, 4, 5,5, 6, 7]
 print(intersectionArray(a,b,n,m))
 o/p-> 4
 ===========================================================================================================================================
+34. Union 
+
+def doUnion(a,n,b,m):
+    set_a=set(a)
+    set_b=set(b)
+    union=set_a.union(set_b) 
+    res=len(union)
+    return res
+        
+        
+a=[85,25,1,32,54,6,6]
+b=[85,85,2,2,2,2]
+n=len(a)
+m=len(b)
+print(doUnion(a,n,b,m))
+o/p-> 7 
+_____________________________________(and)______________________________
+def doUnion(a,n,b,m):
+    set_a=set(a)
+    set_b=set(b)
+    union=set_a.union(set_b)
+    return union
+        
+        
+            
+        
+a=[85,25,1,32,54,6,6]
+b=[85,85,2,2,2,2]
+n=len(a)
+m=len(b)
+uni=doUnion(a,n,b,m) 
+for i in uni:
+    print(i,end=" ")
+o/p->32 1 2 85 6 54 25
+=================================================================================================================================================
+
+
+
+
+
 
 
 
