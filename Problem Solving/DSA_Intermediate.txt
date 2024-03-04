@@ -824,31 +824,25 @@ n,m=len(arr1),len(arr2)
 print(kthElement(arr1, arr2, n, m, k)) 
 o/p 256
 ============================================================================================================================= 
-def longestSubArray(A, n):
+37. The most repeated element in an array which is the element count is greater than n/2
+def mostRepeatedElement(A, n):
     res = n / 2
     count = 1
     majority_element = None
-
     for i in range(n - 1):
         count = 1  # Reset count for each new element
         for j in range(i + 1, n):
             if A[i] == A[j]:
                 count += 1 
-        print(count)        
-
         if count > res:
-            majority_element = A[i]
-            break  # No need to continue if the majority element is found
-
+            majority_element = A[i] 
+            break# No need to continue if the majority element is found
     return majority_element
-
-
-A = [4, 3, 1, 2, 4, 4, 4, 5, 4]
+A = [1, 3, 2, 5, 4, 4, 4, 4, 4]
 n = len(A)
-print(longestSubArray(A, n))
-
-
-
+print("The most repeated element is:",mostRepeatedElement(A, n)) 
+o/p-> The most repeated element is :4
+========================================================================================================================================================
 
 
 
