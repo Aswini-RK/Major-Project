@@ -905,6 +905,25 @@ result = hashTable(arr,n)
 for key, value in result.items():
     print(f"{key} occured {value} times") 
 ======================================================================================================================================================
+41. program using *args 
+def fun(*args):
+    sum=0
+    for data in args:
+        sum+=data 
+    return sum  
+
+print(fun(10,10,10,10,10,10,10,10,10,10)) 
+==============================================================================================================================
+42. program using **Kwargs 
+ 
+def fun(**kwargs):
+    for key,value in kwargs.items():
+        print(f"{key} : {value}") 
+        # print("%s:%s"%(key,value))
+
+fun(Name="Dummy_name",Age=21,Address="Madurai") 
+===================================================================================================================================
+
 
 
 
