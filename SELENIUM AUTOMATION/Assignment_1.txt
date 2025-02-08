@@ -1,0 +1,26 @@
+from selenium import webdriver
+import time
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
+driver = webdriver.Chrome()
+driver.get("https://rahulshettyacademy.com/loginpagePractise/")
+driver.maximize_window()
+driver.implicitly_wait(5)
+driver.find_element(By.LINK_TEXT,"Free Access to InterviewQues/ResumeAssistance/Material").click()
+child_window = driver.window_handles
+driver.switch_to.window(child_window[1])
+exact_text = driver.find_element(By.CSS_SELECTOR,".im-para.red").text
+final_text = exact_text.split()
+mail_id = final_text[4]
+driver.close()
+driver.switch_to.window(child_window[0])
+driver.find_element(By.XPATH,"//input[@type='text']").send_keys(mail_id)
+driver.find_element(By.CSS_SELECTOR,"#password").send_keys('123@123')
+driver.find_element(By.CSS_SELECTOR,"input[type='submit']").click()
+wait = WebDriverWait(driver,10)
+wait.until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, ".alert-danger")))
+print(driver.find_element(By.CSS_SELECTOR, ".alert-danger").text)
+

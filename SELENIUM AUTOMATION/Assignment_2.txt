@@ -1,0 +1,35 @@
+from selenium import webdriver
+import time
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
+driver = webdriver.Chrome()
+driver.get("https://rahulshettyacademy.com/angularpractice/")
+driver.implicitly_wait(4)
+driver.maximize_window()
+
+# Regular expression for href related elements [note : use this if you don't find any elements]
+# CSS selectors : a[href*='shop']   tagname[attribute*='short link name afetr slash']
+# Xpath : a[contains(@href,'shop')] //tagname[contains(@attribute,'short link name afetr slash']
+driver.find_element(By.CSS_SELECTOR,"a[href*='shop']").click()
+cards_list = driver.find_elements(By.XPATH,"//div[@class='card h-100']")
+for cards in cards_list:
+    productName = cards.find_element(By.XPATH,"div/h4/a").text
+    if productName == 'Blackberry':
+        cards.find_element(By.XPATH,"div/button").click()
+        break
+driver.find_element(By.CSS_SELECTOR,"a[class*='btn-primary']").click()
+driver.find_element(By.CSS_SELECTOR,"button[class*='btn-success']").click()
+driver.find_element(By.ID,"country").send_keys("ind")
+wait_time = WebDriverWait(driver,10)
+wait_time.until(expected_conditions.presence_of_element_located((By.LINK_TEXT,'India')))
+driver.find_element(By.LINK_TEXT,"India").click()
+driver.find_element(By.XPATH,"//div[@class='checkbox checkbox-primary']").click()
+driver.find_element(By.CSS_SELECTOR,"input[type='submit']").click()
+word = driver.find_element(By.CLASS_NAME,"alert-success").text
+assert "Success!" in word
+driver.close()
+
+

@@ -1,0 +1,39 @@
+from selenium import webdriver
+import time
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
+#chrome webdriver service is middle man
+driver = webdriver.Chrome()
+
+driver.get("https://rahulshettyacademy.com/angularpractice/")
+# Types of locators are given below
+# NAME, ID, CSSName,CSSSelector, XPATH, linkText
+#Css selectors has #id and .classname inorder to get selected in selectorsHUB
+# CSSSelector = tagname[attribute='value']
+driver.find_element(By.CSS_SELECTOR, "input[name='name']").send_keys("Demo Name")
+# Name locators
+driver.find_element(By.NAME, "email").send_keys("Demo@gmail.com")
+#ID locators
+driver.find_element(By.ID, "exampleInputPassword1").send_keys("Demo@123")
+#ID locators
+driver.find_element(By.ID, "exampleCheck1").click()
+# XPATH = //tagname[@attribute='value']
+driver.find_element(By.XPATH,"//input[@type='submit']").click()
+#Class name locators
+message = driver.find_element(By.CLASS_NAME,"alert-success").text
+assert "Success" in message
+driver.find_element(By.CSS_SELECTOR,"#inlineRadio1").click()
+#Static dropdown
+dropdown = Select(driver.find_element(By.ID,"exampleFormControlSelect1"))
+dropdown.select_by_index(1)
+dropdown.select_by_visible_text("Male")
+
+driver.find_element(By.XPATH,"(//input[@type='text'])[3]").send_keys("hello")
+driver.find_element(By.XPATH,"(//input[@type='text'])[3]").clear()
+
+
+
+
+time.sleep(5)

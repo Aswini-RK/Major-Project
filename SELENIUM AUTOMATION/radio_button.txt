@@ -1,0 +1,17 @@
+from selenium import webdriver
+import time
+
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+driver.get("https://rahulshettyacademy.com/AutomationPractice/")
+
+radio_buttons = driver.find_elements(By.XPATH,"//input[@type='radio']")
+print(len(radio_buttons))
+for radio_button in radio_buttons:
+    if radio_button.get_attribute("value")=="radio3":
+        radio_button.click()
+        assert radio_button.is_selected() # if not selected then it throws an error
+        break
+
+time.sleep(3)
