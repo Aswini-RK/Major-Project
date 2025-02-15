@@ -1,0 +1,21 @@
+#this fixture can be placed in the separate file named as conftest so that it is applicable for all methods.
+# this is useful for invoking the same browser for different test cases
+import pytest
+
+# scope= 'class' - is used if the fixture needed to be performed before class name and after all test cases.
+@pytest.fixture(scope="class")
+def setup():
+    print("I will be executing first")
+    yield
+    print("This is last execution")
+
+
+@pytest.fixture()
+def dataload():
+    print("user profile execution")
+    return ['Aswini','RK','aswinirk@gmail.com']
+
+@pytest.fixture(params=[("Chrome","Aswini"),("Firefox","RK")])
+def dataBrowser(request):
+    return request.param
+

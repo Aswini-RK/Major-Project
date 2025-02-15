@@ -1,0 +1,16 @@
+# pytest has fixture where it is used as pre requests and post requests for chrome invocation etc.
+# this fixture can be placed in the separate file named as conftest so that it is applicable for all methods.
+import pytest
+
+@pytest.mark.usefixtures("setup")
+class TestExamples:
+    def test_firstFixture(self):
+        print("this is first demo testing")
+    def test_secondfixture(self):
+        print("this is second demo testing")
+    def test_thirdfixture(self):
+        print("this is third demo testing")
+    def test_fourthfixture(self):
+        print("this is fourth demo testing")
+    def test_fifthfixture(self):
+        print("this is fifth demo testing")

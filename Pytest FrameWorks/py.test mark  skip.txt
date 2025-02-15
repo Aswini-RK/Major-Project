@@ -1,0 +1,10 @@
+import pytest
+
+
+@pytest.mark.skip
+def test_demoCreditCard():
+    msg = "hi"
+    assert msg == "hello", "string failed becasue string not matched"
+
+def test_demoname():
+    print("Four")

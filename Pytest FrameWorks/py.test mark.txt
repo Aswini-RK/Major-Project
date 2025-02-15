@@ -1,0 +1,26 @@
+#The pytest file should have own pacakage
+# the py test file name should always start test_ or end with _test
+# Method (function) name should start with test_
+# Each method are called as one test case
+# method name should have sense
+# -v for verbose,-s (standard output)for more info,-k for particular method name execution (required if we want to run the required name in the method which is present in two different file)
+# Pytest marks are given below
+# @pytest.mark.smoke -> for running for selected methods alone
+# @pytest.mark.skip -> for skipping any method which give failed report
+# @pytest.mark.xfail -> It wont give pass or fail report as output in command prompt
+import pytest
+
+@pytest.mark.smoke
+def test_firstProgram():
+    print("First")
+
+@pytest.mark.xfail
+def test_bankCreditCard():
+    print("Second")
+
+
+def test_crossBrowser(dataBrowser):
+    print(dataBrowser[0])
+    print(dataBrowser[1])
+
+
