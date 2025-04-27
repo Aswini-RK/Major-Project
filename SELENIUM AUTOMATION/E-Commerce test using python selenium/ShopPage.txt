@@ -1,0 +1,26 @@
+from selenium.webdriver.common.by import By
+
+from PageObject.checkOutPage import check_out_page
+from utils.BrowserUtilis import BrowserUtilis
+
+
+class ShopPage(BrowserUtilis):
+    def __init__(self,driver):
+        super().__init__(driver)
+        self.driver = driver
+        self.addToCart = (By.CSS_SELECTOR, "a[href*='shop']")
+        self.list_item=(By.XPATH, "//div[@class='card h-100']")
+        self.checkout_link = (By.CSS_SELECTOR, "a[class*='btn-primary']")
+
+    def add_to_cart(self,selected_product):
+        self.driver.find_element(*self.addToCart).click()
+        cards_list = self.driver.find_elements(*self.list_item)
+        for cards in cards_list:
+            productName = cards.find_element(By.XPATH, "div/h4/a").text
+            if productName == selected_product:
+                cards.find_element(By.XPATH, "div/button").click()
+                break
+    def check_out_page(self):
+        self.driver.find_element(*self.checkout_link).click()
+        Confirmation_Page = check_out_page(self.driver)
+        return Confirmation_Page

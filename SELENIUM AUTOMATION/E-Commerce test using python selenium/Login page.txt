@@ -1,0 +1,20 @@
+from selenium.webdriver.common.by import By
+
+from PageObject.ShopPage import ShopPage
+from utils.BrowserUtilis import BrowserUtilis
+
+
+class LoginPage(BrowserUtilis):
+    def __init__(self,driver):
+        super().__init__(driver)
+        self.driver = drivern
+        self.UserName_input = (By.ID, "username")
+        self.Password_input =(By.NAME, "password")
+        self.sign_up = (By.ID, "signInBtn")
+
+    def login(self,UserName,Password):
+        self.driver.find_element(*self.UserName_input).send_keys(UserName)
+        self.driver.find_element(*self.Password_input).send_keys(Password)
+        self.driver.find_element(*self.sign_up).click()
+        shop_page = ShopPage(self.driver)
+        return shop_page
